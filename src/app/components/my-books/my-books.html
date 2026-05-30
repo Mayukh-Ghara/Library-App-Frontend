@@ -1,0 +1,26 @@
+<div class="my-books-container">
+  <h2>My Borrowed Books</h2>
+
+  <div *ngIf="isLoading"><p>Loading your books...</p></div>
+  <div *ngIf="errorMessage" style="color: red;"><p>{{ errorMessage }}</p></div>
+
+  <div *ngIf="!isLoading && !errorMessage" class="books-grid">
+    
+    <div class="book-card" *ngFor="let item of borrowedBooks" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 10px;">
+      
+      <h3>{{ item.title }}</h3>
+      <p><strong>Author:</strong> {{ item.author }}</p>
+      <p><small>Borrowed on: {{ item.borrowDate | date }}</small></p>
+
+      <button class="btn-secondary" (click)="returnBook(item.bookId, item.title)">
+        Return Book
+      </button>
+
+    </div>
+
+    <div *ngIf="borrowedBooks.length === 0">
+      <p>You have no borrowed books.</p>
+    </div>
+
+  </div>
+</div>

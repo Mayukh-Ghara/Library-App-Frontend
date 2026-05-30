@@ -1,0 +1,9 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Takes up 100% of the screen height */
+  margin: 0; /* Removes default browser margins */
+  background-color: #9E9E9E; /* Added a dark background to make your form pop */
+  font-family: Arial, sans-serif;
+}

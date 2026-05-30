@@ -1,0 +1,100 @@
+/* Centers the login card in the middle of the screen */
+.page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Takes up the full height of the viewport */
+  background-color: #ffffff; /* Optional: change this if you want a dark background */
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px; /* Much better than 55vw for forms */
+  background-color: #F9F6EE;
+  border-radius: 8px;
+  border: 1px solid #45df1b;
+  padding: 40px 30px; /* More breathing room */
+  box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adds depth */
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 100%; /* Ensures inputs take up the full container width */
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 15px;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #45df1b; /* Highlights green when clicking the input */
+}
+
+button {
+  padding: 12px 20px;
+  background-color: #45df1b;
+  color: #111;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%; /* Makes the button stretch fully */
+  transition: background-color 0.2s;
+}
+
+button:hover:not(:disabled) {
+  background-color: #3ec418;
+}
+
+button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.validation-error, .error-message {
+  color: #d93025;
+  font-size: 0.85em;
+  margin-top: 5px;
+}
+
+.signup-text {
+  margin-top: 20px;
+  font-size: 0.9em;
+}
+
+.signup-text a {
+  color: #3ec418;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signup-text a:hover {
+  text-decoration: underline;
+}

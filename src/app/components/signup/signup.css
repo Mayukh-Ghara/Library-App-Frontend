@@ -1,0 +1,107 @@
+.page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  background-color: #ffffff; 
+  padding: 20px; /* Prevents the card from touching edges on small mobile screens */
+  box-sizing: border-box;
+}
+
+.signup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 450px; /* Slightly wider than login for the extra fields */
+  background-color: #F9F6EE;
+  border-radius: 8px;
+  border: 1px solid #45df1b; /* Matches login border */
+  padding: 40px 30px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adds depth */
+}
+
+.signup-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 100%; 
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 15px;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #45df1b; 
+}
+
+.helper-text {
+  font-size: 0.85em;
+  color: #666;
+  margin-top: 5px;
+}
+
+button {
+  padding: 12px 20px;
+  background-color: #45df1b;
+  color: #111;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%; 
+  transition: background-color 0.2s;
+}
+
+button:hover:not(:disabled) {
+  background-color: #3ec418;
+}
+
+button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.validation-error, .error-message {
+  color: #d93025;
+  font-size: 0.85em;
+  margin-top: 5px;
+}
+
+.login-text {
+  margin-top: 20px;
+  font-size: 0.9em;
+}
+
+.login-text a {
+  color: #3ec418;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-text a:hover {
+  text-decoration: underline;
+}

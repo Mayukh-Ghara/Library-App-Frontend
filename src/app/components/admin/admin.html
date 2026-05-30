@@ -1,0 +1,93 @@
+<div class="admin-container">
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <button [class.active]="activeTab === 'users'" (click)="switchTab('users')">Manage Users</button>
+    <button [class.active]="activeTab === 'addBook'" (click)="switchTab('addBook')">Add New Book</button>
+    <button [class.active]="activeTab === 'inventory'" (click)="switchTab('inventory')">Manage Inventory</button>
+  </div>
+
+  <div class="content">
+    <div *ngIf="successMessage" class="alert success">{{ successMessage }}</div>
+
+    <div *ngIf="activeTab === 'users'">
+      <h3>User Management</h3>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td><span class="role-badge" [ngClass]="user.role">{{ user.role }}</span></td>
+            <td>
+              <button class="btn-secondary" (click)="toggleRole(user)">
+                Make {{ user.role === 'admin' ? 'User' : 'Admin' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="activeTab === 'addBook'" class="form-container">
+      <h3>Add Book to Catalog</h3>
+      <form [formGroup]="bookForm" (ngSubmit)="onSubmitBook()">
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" formControlName="title">
+        </div>
+        <div class="form-group">
+          <label>Author</label>
+          <input type="text" formControlName="author">
+        </div>
+        <div class="form-group">
+          <label>ISBN</label>
+          <input type="text" formControlName="isbn">
+        </div>
+        <div class="form-group">
+          <label>Published Year</label>
+          <input type="number" formControlName="publishedYear">
+        </div>
+        <div class="form-group">
+          <label>Initial Copies</label>
+          <input type="number" formControlName="copiesAvailable">
+        </div>
+        <button type="submit" [disabled]="bookForm.invalid" class="btn-primary">Add Book</button>
+      </form>
+    </div>
+
+    <div *ngIf="activeTab === 'inventory'">
+      <h3>Inventory Management</h3>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Copies Available</th>
+            <th>Adjust</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let book of books">
+            <td>{{ book.id }}</td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td><strong>{{ book.copiesAvailable }}</strong></td>
+            <td>
+              <button class="btn-icon" (click)="updateCopies(book, book.copiesAvailable - 1)" [disabled]="book.copiesAvailable === 0">-</button>
+              <button class="btn-icon" (click)="updateCopies(book, book.copiesAvailable + 1)">+</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

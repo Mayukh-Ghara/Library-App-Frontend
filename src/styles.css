@@ -1,1 +1,117 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f4f7f6;
+  color: #333;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.primary-btn { background-color: #007bff; color: white; width: 100%; }
+.primary-btn:hover { background-color: #0056b3; }
+
+.action-btn { background-color: #28a745; color: white; width: 100%; }
+.action-btn:hover { background-color: #218838; }
+
+.danger-btn { background-color: #dc3545; color: white; width: 100%; }
+.danger-btn:hover { background-color: #c82333; }
+
+.logout-btn { background-color: transparent; color: white; border: 1px solid white; }
+.logout-btn:hover { background-color: white; color: #007bff; }
+
+/* Auth Pages (Login / Signup) */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #e9ecef;
+}
+
+.auth-card {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.auth-card h2 { margin-bottom: 20px; }
+.form-group { margin-bottom: 15px; text-align: left; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+.form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+.auth-card p { margin-top: 15px; font-size: 0.9em; }
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007bff;
+  padding: 15px 30px;
+  color: white;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  opacity: 0.8;
+}
+
+.nav-links a:hover, .nav-links a.active {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* Page Layout */
+.main-content { padding: 30px; }
+.page-container { max-width: 1200px; margin: 0 auto; }
+.header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.search-bar { padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 5px; }
+.empty-state { text-align: center; padding: 50px; color: #666; font-size: 1.2em; }
+
+/* Book Grid & Cards */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.book-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.book-cover { font-size: 4em; margin-bottom: 15px; }
+.book-info { flex-grow: 1; margin-bottom: 15px; }
+.book-info h3 { font-size: 1.1em; margin-bottom: 5px; }
+.book-info p { color: #666; font-size: 0.9em; }
