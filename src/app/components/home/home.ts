@@ -1,18 +1,25 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    CommonModule, 
-    RouterModule // Critical for nested navigation
-  ], 
+    CommonModule,
+    RouterModule
+  ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
 export class HomeComponent {
-  // Currently, no complex logic is needed here because 
-  // the LibraryComponent and MyBooksComponent handle their own data!
+
+  constructor(private router: Router) {}
+
+  logout(): void {
+    // Clear any stored auth tokens/session data here, e.g.:
+    // localStorage.removeItem('token');
+    this.router.navigate(['/login']);
+  }
+
 }

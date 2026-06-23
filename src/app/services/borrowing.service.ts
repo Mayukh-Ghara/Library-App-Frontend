@@ -11,7 +11,7 @@ export class BorrowingService {
   constructor(private http: HttpClient) { }
 
   getMyBooks(userId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/user/${userId}`);
+    return this.http.get(`${this.apiUrl}`);
   }
 
   borrowBook(bookId: number): Observable<any> {

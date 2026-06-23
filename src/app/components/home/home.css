@@ -23,3 +23,30 @@
   flex-grow: 1;
   padding: 30px;
 }
+
+.logout-btn {
+  display: block;
+  width: 100%;
+  margin-top: auto;
+  padding: 10px 16px;
+  background-color: transparent;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #e74c3c;
+  color: #ffffff;
+}
+
+.logout-btn:active {
+  background-color: #c0392b;
+  border-color: #c0392b;
+  color: #ffffff;
+}

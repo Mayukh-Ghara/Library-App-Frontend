@@ -4,12 +4,12 @@
     <h2>Main Menu</h2>
     <a routerLink="/home/library" routerLinkActive="active">Library Catalog</a>
     <a routerLink="/home/my-books" routerLinkActive="active">My Books</a>
+
+    <button class="logout-btn" (click)="logout()">Logout</button>
   </div>
 
   <div class="dashboard-content">
-    
     <router-outlet></router-outlet>
-    
   </div>
 
 </div>
