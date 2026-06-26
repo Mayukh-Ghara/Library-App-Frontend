@@ -4,24 +4,61 @@
   <div *ngIf="isLoading"><p>Loading books...</p></div>
   <div *ngIf="errorMessage" style="color: red;"><p>{{ errorMessage }}</p></div>
 
-  <div *ngIf="!isLoading && !errorMessage" class="books-grid">
-    <div class="book-card" *ngFor="let book of books" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 10px;">
-      
-      <h3>{{ book.title }}</h3>
-      <p><strong>Author:</strong> {{ book.author }}</p>
-      <p><strong>ISBN:</strong> {{ book.isbn }}</p>
-      
-      <p [style.color]="book.copiesAvailable > 0 ? 'green' : 'red'">
-        <strong>{{ book.copiesAvailable > 0 ? book.copiesAvailable + ' Copies Available' : 'Out of Stock' }}</strong>
-      </p>
+  <div *ngIf="!isLoading && !errorMessage">
 
-      <button class="btn-primary" 
-              [disabled]="book.copiesAvailable === 0" 
-              (click)="borrowBook(book)">
-        Borrow Book
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input
+        type="text"
+        placeholder="Search by title or author..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()"
+        class="search-input"
+      />
+    </div>
+
+    <!-- Books Grid -->
+    <div class="books-grid">
+      <div class="book-card" *ngFor="let book of books">
+        
+        <h3>{{ book.title }}</h3>
+        <p><strong>Author:</strong> {{ book.author }}</p>
+        <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+        
+        <p [style.color]="book.copiesAvailable > 0 ? 'green' : 'red'">
+          <strong>{{ book.copiesAvailable > 0 ? book.copiesAvailable + ' Copies Available' : 'Out of Stock' }}</strong>
+        </p>
+
+        <button class="btn-primary"
+                [disabled]="book.copiesAvailable === 0"
+                (click)="borrowBook(book)">
+          Borrow Book
+        </button>
+
+      </div>
+
+      <div *ngIf="books.length === 0"><p>No books found.</p></div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+        &laquo; Prev
       </button>
 
+      <button
+        *ngFor="let page of pageNumbers"
+        (click)="goToPage(page)"
+        [class.active]="page === currentPage">
+        {{ page }}
+      </button>
+
+      <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+        Next &raquo;
+      </button>
+
+      <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
     </div>
-    <div *ngIf="books.length === 0"><p>No books found.</p></div>
+
   </div>
 </div>
