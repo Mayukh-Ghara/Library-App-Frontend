@@ -40,7 +40,8 @@ export class LoginComponent {
         // Extract the role and navigate
         const role = this.authService.getUserRole();
         
-        if (role === 'admin') {
+        // THE NEW FIX: Convert to lowercase to catch both 'Admin' and 'admin'
+        if (role?.toLowerCase() === 'admin') {
           this.router.navigate(['/admin']);
         } else {
           this.router.navigate(['/home']);

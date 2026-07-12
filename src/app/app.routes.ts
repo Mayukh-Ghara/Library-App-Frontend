@@ -9,6 +9,9 @@ import { adminGuard } from './guards/admin.guard';
 
 // 1. IMPORT YOUR ACTUAL ADMIN COMPONENT
 import { AdminComponent } from './components/admin/admin'; 
+import { UserManagementComponent } from './admin_component/user-management/user-management';
+import { InventoryManagementComponent } from './admin_component/inventory-management/inventory-management';
+import { AddBookComponent } from './admin_component/add-book/add-book';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -34,11 +37,13 @@ export const routes: Routes = [
   // ==========================================
   {
     path: 'admin',
-    // 2. ASSIGN THE COMPONENT (No longer commented out!)
     component: AdminComponent, 
-    
-    // 3. TEMPORARILY disable the guard to prove the component works. 
-    // We will uncomment this right after we see the page!
-    // canActivate: [adminGuard] 
+    canActivate: [adminGuard],
+    children: [
+      {path: 'user-management', component: UserManagementComponent, canActivate: [adminGuard]},
+      {path: 'inventory-management', component: InventoryManagementComponent, canActivate: [adminGuard]},
+      {path: 'add-book', component: AddBookComponent, canActivate: [adminGuard]},
+      {path: '', redirectTo: 'user-management', pathMatch: 'full'}
+    ]
   }
 ];

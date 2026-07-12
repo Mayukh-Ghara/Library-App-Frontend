@@ -35,6 +35,22 @@
   border-left: 4px solid #3498db;
 }
 
+.logout-btn {
+  margin-top: auto;
+  margin-left: 20px;
+  margin-right: 20px;
+  background-color: #e74c3c;
+  color: white;
+  border-radius: 4px;
+  padding: 10px 15px;
+  text-align: center;
+}
+
+.logout-btn:hover {
+  background-color: #c0392b;
+  border-left: none;
+}
+
 .content {
   flex-grow: 1;
   padding: 40px;

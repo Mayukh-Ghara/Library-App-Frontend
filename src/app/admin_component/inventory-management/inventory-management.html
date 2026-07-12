@@ -1,0 +1,24 @@
+<h3>Inventory Management</h3>
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Copies Available</th>
+      <th>Adjust</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let book of books">
+      <td>{{ book.id }}</td>
+      <td>{{ book.title }}</td>
+      <td>{{ book.author }}</td>
+      <td><strong>{{ book.copiesAvailable }}</strong></td>
+      <td>
+        <button class="btn-icon" (click)="updateCopies(book, book.copiesAvailable - 1)" [disabled]="book.copiesAvailable === 0">-</button>
+        <button class="btn-icon" (click)="updateCopies(book, book.copiesAvailable + 1)">+</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

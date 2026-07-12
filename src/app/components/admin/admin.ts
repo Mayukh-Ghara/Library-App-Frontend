@@ -1,14 +1,18 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AddBookComponent } from '../../admin_component/add-book/add-book';
+import { UserManagementComponent } from '../../admin_component/user-management/user-management';
+import { InventoryManagementComponent } from '../../admin_component/inventory-management/inventory-management';
 
-// 1. Import your Admin Service!
+// 1. Import your Admin Service
 import { AdminService } from '../../services/admin.service';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule], 
+  // Removed ReactiveFormsModule from imports
+  imports: [CommonModule, UserManagementComponent, AddBookComponent, InventoryManagementComponent], 
   templateUrl: './admin.html',
   styleUrls: ['./admin.css'] 
 })
@@ -18,21 +22,13 @@ export class AdminComponent implements OnInit {
   
   users: any[] = [];
   books: any[] = [];
-  bookForm: FormGroup;
 
+  // Removed FormBuilder injection
   constructor(
-    private fb: FormBuilder,
-    private adminService: AdminService, // 2. Inject the service here
+    private adminService: AdminService,
+    private authService: AuthService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    this.bookForm = this.fb.group({
-      title: ['', Validators.required],
-      author: ['', Validators.required],
-      isbn: ['', Validators.required],
-      publishedYear: ['', Validators.required],
-      copiesAvailable: [1, [Validators.required, Validators.min(1)]]
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -47,13 +43,16 @@ export class AdminComponent implements OnInit {
     this.successMessage = ''; 
   }
 
+  logout(): void {
+    this.authService.logout();
+  }
+
   // ==========================================
   // USER MANAGEMENT
   // ==========================================
 
   loadUsers(): void {
     this.adminService.getAllUsers().subscribe({
-      // Added : any to data and err
       next: (data: any) => this.users = data,
       error: (err: any) => console.error('Failed to load users', err)
     });
@@ -67,12 +66,16 @@ export class AdminComponent implements OnInit {
         user.role = newRole; 
         this.showSuccess(`Changed ${user.username}'s role to ${newRole}!`);
       },
-      // Added : any to err
       error: (err: any) => {
         console.error('Failed to update role', err);
         alert('Could not update user role. Check console.');
       }
     });
+  }
+
+  // Wrapper used by child `app-user-management` output
+  onToggleRole(user: any): void {
+    this.toggleRole(user);
   }
 
   // ==========================================
@@ -81,21 +84,23 @@ export class AdminComponent implements OnInit {
 
   loadBooks(): void {
     this.adminService.getAllBooks().subscribe({
-      // Added : any to data and err
-      next: (data: any) => this.books = data,
+      next: (response: any) => {
+        // .NET Core converts C# PascalCase properties to camelCase in JSON by default.
+        // Therefore, 'Data' becomes 'data' in the frontend.
+        this.books = response.data; 
+      },
       error: (err: any) => console.error('Failed to load books', err)
     });
   }
 
-  onSubmitBook(): void {
-    if (this.bookForm.invalid) return;
-
-    this.adminService.addBook(this.bookForm.value).subscribe({
-      // Added : any to newBook and err
+  // Handler for `app-add-book` child component
+  // (Removed the redundant onSubmitBook function entirely)
+  onBookAdded(book: any): void {
+    if (!book) return;
+    this.adminService.addBook(book).subscribe({
       next: (newBook: any) => {
-        this.showSuccess(`"${this.bookForm.value.title}" added to catalog!`);
-        this.books.push(newBook); 
-        this.bookForm.reset({ copiesAvailable: 1 }); 
+        this.showSuccess(`"${book.title}" added to catalog!`);
+        this.books.push(newBook);
       },
       error: (err: any) => {
         console.error('Failed to add book', err);
@@ -112,12 +117,17 @@ export class AdminComponent implements OnInit {
         book.copiesAvailable = newAmount; 
         this.showSuccess(`Inventory updated for "${book.title}".`);
       },
-      // Added : any to err
       error: (err: any) => {
         console.error('Failed to update inventory', err);
         alert('Could not update inventory.');
       }
     });
+  }
+
+  // Wrapper for `app-inventory-management` child component
+  onUpdateCopies(payload: { book: any, newCount: number }): void {
+    if (!payload) return;
+    this.updateCopies(payload.book, payload.newCount);
   }
 
   private showSuccess(message: string): void {
