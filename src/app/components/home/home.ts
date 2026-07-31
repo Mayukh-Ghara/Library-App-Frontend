@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-home',
@@ -14,12 +15,10 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class HomeComponent {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private authService: AuthService) {}
 
   logout(): void {
-    // Clear any stored auth tokens/session data here, e.g.:
-    // localStorage.removeItem('token');
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 
 }

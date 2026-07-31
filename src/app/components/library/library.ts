@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
@@ -34,24 +34,20 @@ export class LibraryComponent implements OnInit, OnDestroy {
   constructor(
     private bookService: BookService,
     private borrowingService: BorrowingService,
-    @Inject(PLATFORM_ID) private platformId: Object,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      // Debounce search — waits 400ms after user stops typing before calling API
-      this.searchSubject.pipe(
-        debounceTime(400),
-        distinctUntilChanged(),
-        takeUntil(this.destroy$)
-      ).subscribe(() => {
-        this.currentPage = 1;
-        this.loadBooks();
-      });
-
+    this.searchSubject.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.currentPage = 1;
       this.loadBooks();
-    }
+    });
+
+    this.loadBooks();
   }
 
   ngOnDestroy(): void {

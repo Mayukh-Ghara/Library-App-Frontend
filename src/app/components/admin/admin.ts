@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AddBookComponent } from '../../admin_component/add-book/add-book';
 import { UserManagementComponent } from '../../admin_component/user-management/user-management';
 import { InventoryManagementComponent } from '../../admin_component/inventory-management/inventory-management';
@@ -12,14 +12,14 @@ import { AuthService } from '../../services/auth';
   selector: 'app-admin',
   standalone: true,
   // Removed ReactiveFormsModule from imports
-  imports: [CommonModule, UserManagementComponent, AddBookComponent, InventoryManagementComponent], 
+  imports: [CommonModule, UserManagementComponent, AddBookComponent, InventoryManagementComponent],
   templateUrl: './admin.html',
-  styleUrls: ['./admin.css'] 
+  styleUrls: ['./admin.css'],
 })
 export class AdminComponent implements OnInit {
-  activeTab: string = 'users'; 
+  activeTab: string = 'users';
   successMessage: string = '';
-  
+
   users: any[] = [];
   books: any[] = [];
 
@@ -27,20 +27,17 @@ export class AdminComponent implements OnInit {
   constructor(
     private adminService: AdminService,
     private authService: AuthService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      // 3. Automatically load data from C# when the page opens!
-      this.loadUsers();
-      this.loadBooks(); 
-    }
+    this.loadUsers();
+    this.loadBooks();
   }
 
   switchTab(tab: string): void {
     this.activeTab = tab;
-    this.successMessage = ''; 
+    this.successMessage = '';
   }
 
   logout(): void {
@@ -53,8 +50,11 @@ export class AdminComponent implements OnInit {
 
   loadUsers(): void {
     this.adminService.getAllUsers().subscribe({
-      next: (data: any) => this.users = data,
-      error: (err: any) => console.error('Failed to load users', err)
+      next: (data: any) => {
+        this.users = data;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => console.error('Failed to load users', err),
     });
   }
 
@@ -63,13 +63,13 @@ export class AdminComponent implements OnInit {
 
     this.adminService.changeUserRole(user.id, newRole).subscribe({
       next: () => {
-        user.role = newRole; 
+        user.role = newRole;
         this.showSuccess(`Changed ${user.username}'s role to ${newRole}!`);
       },
       error: (err: any) => {
         console.error('Failed to update role', err);
         alert('Could not update user role. Check console.');
-      }
+      },
     });
   }
 
@@ -87,9 +87,9 @@ export class AdminComponent implements OnInit {
       next: (response: any) => {
         // .NET Core converts C# PascalCase properties to camelCase in JSON by default.
         // Therefore, 'Data' becomes 'data' in the frontend.
-        this.books = response.data; 
+        this.books = response.data;
       },
-      error: (err: any) => console.error('Failed to load books', err)
+      error: (err: any) => console.error('Failed to load books', err),
     });
   }
 
@@ -105,33 +105,33 @@ export class AdminComponent implements OnInit {
       error: (err: any) => {
         console.error('Failed to add book', err);
         alert('Could not add the book. Check console.');
-      }
+      },
     });
   }
 
   updateCopies(book: any, newAmount: number): void {
-    if (newAmount < 0) return; 
+    if (newAmount < 0) return;
 
     this.adminService.updateBookCopies(book.id, newAmount).subscribe({
       next: () => {
-        book.copiesAvailable = newAmount; 
+        book.copiesAvailable = newAmount;
         this.showSuccess(`Inventory updated for "${book.title}".`);
       },
       error: (err: any) => {
         console.error('Failed to update inventory', err);
         alert('Could not update inventory.');
-      }
+      },
     });
   }
 
   // Wrapper for `app-inventory-management` child component
-  onUpdateCopies(payload: { book: any, newCount: number }): void {
+  onUpdateCopies(payload: { book: any; newCount: number }): void {
     if (!payload) return;
     this.updateCopies(payload.book, payload.newCount);
   }
 
   private showSuccess(message: string): void {
     this.successMessage = message;
-    setTimeout(() => this.successMessage = '', 3000);
+    setTimeout(() => (this.successMessage = ''), 3000);
   }
 }

@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common'; // 1. Import isPlatformBrowser
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { BorrowingService } from '../../services/borrowing.service';
 import { AuthService } from '../../services/auth';
 
@@ -18,18 +18,11 @@ export class MyBooksComponent implements OnInit {
   constructor(
     private borrowingService: BorrowingService,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) private platformId: Object // 2. Inject PLATFORM_ID
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    // 3. ONLY run this in the browser where your JWT token actually exists!
-    if (isPlatformBrowser(this.platformId)) {
-      this.loadMyBooks();
-    } else {
-      // If running on the server, just wait silently.
-      this.isLoading = false; 
-    }
+    this.loadMyBooks();
   }
 
   loadMyBooks(): void {

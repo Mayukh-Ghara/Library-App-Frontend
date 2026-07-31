@@ -1,8 +1,7 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common'; 
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +10,12 @@ export class AuthService {
   private apiUrl = 'http://localhost:5198/api/Auth';
 
   constructor(
-    private http: HttpClient, 
-    private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object 
+    private http: HttpClient,
+    private router: Router
   ) { }
 
-
   login(credentials: any): Observable<any> {
-    this.logout(false); // Clear any existing token before logging in
+    this.logout(false);
     return this.http.post(`${this.apiUrl}/login`, credentials);
   }
 
@@ -27,29 +24,22 @@ export class AuthService {
   }
 
   saveToken(token: string): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('jwt_token', token);
-    }
+    localStorage.setItem('jwt_token', token);
   }
 
   logout(shouldNavigate: boolean = true): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('jwt_token');
-    }
+    localStorage.removeItem('jwt_token');
     if (shouldNavigate) {
       this.router.navigate(['/login']);
     }
   }
 
   getToken(): string | null {
-    if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem('jwt_token');
-    }
-    return null; 
+    return localStorage.getItem('jwt_token');
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken(); 
+    return !!this.getToken();
   }
 
   // ==========================================
